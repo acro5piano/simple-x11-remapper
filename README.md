@@ -169,7 +169,7 @@ RUST_LOG=debug ./target/debug/simple-x11-remapper example_config.yaml
 
 ## License
 
-This project maintains the same license as the original simple-x11-remapper project.
+MIT License - see [LICENSE](LICENSE) file for details.
 
 ## Contributing
 
