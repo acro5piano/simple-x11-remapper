@@ -202,6 +202,20 @@ dependencies = [
 ]
 
 [[package]]
+name = "simple-x11-remapper"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "env_logger",
+ "log",
+ "pkg-config",
+ "serde",
+ "serde_yaml",
+ "thiserror",
+ "x11",
+]
+
+[[package]]
 name = "syn"
 version = "2.0.106"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -358,18 +372,4 @@ checksum = "502da5464ccd04011667b11c435cb992822c2c0dbde1770c988480d312a0db2e"
 dependencies = [
  "libc",
  "pkg-config",
-]
-
-[[package]]
-name = "xremap"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "env_logger",
- "log",
- "pkg-config",
- "serde",
- "serde_yaml",
- "thiserror",
- "x11",
 ]

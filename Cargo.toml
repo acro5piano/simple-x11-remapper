@@ -1,5 +1,5 @@
 [package]
-name = "xremap"
+name = "simple-x11-remapper"
 version = "0.1.0"
 edition = "2021"
 build = "build.rs"
@@ -17,5 +17,5 @@ env_logger = "0.10"
 pkg-config = "0.3"
 
 [[bin]]
-name = "xremap"
+name = "simple-x11-remapper"
 path = "src/main.rs"
