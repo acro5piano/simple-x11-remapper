@@ -79,8 +79,16 @@ impl EventHandler {
         }
     }
 
-    pub fn handle_mapping_notify(&mut self) {
-        self.update_key_mappings();
+    pub fn handle_mapping_notify(&mut self, mapping_event: &xlib::XMappingEvent) {
+        unsafe {
+            xlib::XRefreshKeyboardMapping(mapping_event as *const _ as *mut _);
+        }
+        // Only update key mappings if the keyboard mapping actually changed
+        // (not for modifier or pointer mapping changes)
+        if mapping_event.request == xlib::MappingKeyboard {
+            info!("Keyboard mapping changed, updating key mappings");
+            self.update_key_mappings();
+        }
     }
 
     fn update_key_mappings(&mut self) {

@@ -34,7 +34,7 @@ impl WindowManager {
         }
     }
 
-    pub fn get_active_window(&mut self) -> Option<Window> {
+    pub fn get_active_window(&self) -> Option<Window> {
         unsafe {
             // Method 1: Try _NET_ACTIVE_WINDOW first
             let mut actual_type: c_ulong = 0;
@@ -63,7 +63,6 @@ impl WindowManager {
                 debug!("_NET_ACTIVE_WINDOW returned window={}", window);
                 xlib::XFree(prop_data as *mut _);
                 if window != 0 && window != self.root_window {
-                    self.current_window = Some(window);
                     return Some(window);
                 }
             } else if !prop_data.is_null() {
@@ -81,18 +80,15 @@ impl WindowManager {
             );
 
             if window != 0 && window != 1 && window != self.root_window {
-                self.current_window = Some(window);
                 Some(window)
             } else {
                 debug!("No valid active window found, trying to find focused window manually");
                 // Method 3: Try to find a window with input focus by checking children
                 if let Some(focused) = self.find_focused_window(self.root_window) {
                     debug!("Found focused window via tree search: {}", focused);
-                    self.current_window = Some(focused);
                     Some(focused)
                 } else {
                     debug!("Using root window as fallback");
-                    self.current_window = Some(self.root_window);
                     Some(self.root_window)
                 }
             }
@@ -205,12 +201,13 @@ impl WindowManager {
     }
 
     pub fn has_window_changed(&mut self) -> bool {
+        let old_window = self.current_window;
         let new_window = self.get_active_window();
 
-        if self.current_window != new_window {
+        if old_window != new_window {
             debug!(
                 "Window changed: {:?} -> {:?}",
-                self.current_window, new_window
+                old_window, new_window
             );
             self.current_window = new_window;
             true
