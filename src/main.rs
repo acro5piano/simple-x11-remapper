@@ -98,8 +98,12 @@ fn main() -> Result<()> {
                     event_handler.handle_property_notify();
                 }
                 xlib::MappingNotify => {
-                    debug!("MappingNotify event");
-                    event_handler.handle_mapping_notify();
+                    let mapping_event = event.mapping;
+                    debug!(
+                        "MappingNotify event: request={}, first_keycode={}, count={}",
+                        mapping_event.request, mapping_event.first_keycode, mapping_event.count
+                    );
+                    event_handler.handle_mapping_notify(&mapping_event);
                 }
                 xlib::ClientMessage => {
                     let client_event = event.client_message;
